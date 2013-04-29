@@ -88,7 +88,7 @@ fi
 
 # get results
 # Here be dragons!
-r=`curl -A Mozilla -b "lw=s" -m 15 -s "$TPB/$url" \
+r=`curl -k -A Mozilla -b "lw=s" -m 15 -s "$TPB/$url" \
 	| grep -Eo '^<td><a href=\"/torrent/[^>]*>.*|^<td><nobr><a href=\"[^"]*|<td align=\"right\">[^<]*' \
 	| sed  's!^<td><a href=\"/torrent/[^>]*>!!; \
 		s!</a>$!!; \
