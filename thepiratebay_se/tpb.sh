@@ -11,6 +11,7 @@
 # you can add -- at the end to indicate end of options
 # (if your program supports it, most do)
 program='/usr/bin/transmission-remote -a'
+TPB="https://thepiratebay.se"
 
 # show N first matches by default
 limit=15
@@ -87,7 +88,7 @@ fi
 
 # get results
 # Here be dragons!
-r=`curl -A Mozilla -b "lw=s" -m 15 -s "https://thepiratebay.se/$url" \
+r=`curl -k -A Mozilla -b "lw=s" -m 15 -s "$TPB/$url" \
 	| grep -Eo '^<td><a href=\"/torrent/[^>]*>.*|^<td><nobr><a href=\"[^"]*|<td align=\"right\">[^<]*' \
 	| sed  's!^<td><a href=\"/torrent/[^>]*>!!; \
 		s!</a>$!!; \
