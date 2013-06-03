@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # by Sairon Istyar, 2012
 # distributed under the GPLv3 license
@@ -8,10 +8,11 @@
 [ -f ~/.wolfram_api_key ] && . ~/.wolfram_api_key
 
 # properly encode query
-q=`echo "$*" | od -t x1 -A n | tr ' ' '%' | tr -d '\n'`
+q=`echo $* | tr ' ' '+'`
 
 # fetch and parse result
-result=`wget -qO - "http://api.wolframalpha.com/v2/query?input=$q&appid=$API_KEY&format=plaintext"`
+result=`curl -s "http://api.wolframalpha.com/v2/query?input=$q&appid=$API_KEY&format=plaintext"`
+
 if [ -n "`echo $result | grep 'Invalid appid'`" ] ; then
 	echo "Invalid API key!"
 	echo "Get one at https://developer.wolframalpha.com/portal/apisignup.html"
@@ -23,9 +24,9 @@ fi
 
 result=`echo "$result" \
 	| tr '\n' '\t' \
-	| sed 's!<plaintext>!\n<plaintext>!g' \
+	| sed -e 's/<plaintext>/\'$'\n<plaintext>/g' \
 	| grep -oE "<plaintext>.*</plaintext>|<pod title=.[^\']*" \
-	| sed  's!<plaintext>!!g; \
+	| sed 's!<plaintext>!!g; \
 		s!</plaintext>!!g; \
 		s!<pod title=.*!\\\x1b[1;36m&\\\x1b[0m!g; \
 		s!<pod title=.!!g; \
