@@ -8,21 +8,21 @@
 [ -f ~/.wolfram_api_key ] && . ~/.wolfram_api_key
 
 # properly encode query
-q=`echo $* | tr ' ' '+'`
+q=$(echo ${*} | tr '\ ' '\+')
 
 # fetch and parse result
-result=`curl -s "http://api.wolframalpha.com/v2/query?input=$q&appid=$API_KEY&format=plaintext"`
+result=$(curl -s "http://api.wolframalpha.com/v2/query?input=${q}&appid=${API_KEY}&format=plaintext")
 
-if [ -n "`echo $result | grep 'Invalid appid'`" ] ; then
+if [ -n "$(echo ${result} | grep 'Invalid appid')" ] ; then
 	echo "Invalid API key!"
 	echo "Get one at https://developer.wolframalpha.com/portal/apisignup.html"
 	echo -n 'Enter your WolframAlpha API key:'
 	read api_key
-	echo "API_KEY=$api_key" >> ~/.wolfram_api_key
+	echo "API_KEY=${api_key}" >> ~/.wolfram_api_key
 	exit 1
 fi
 
-result=`echo "$result" \
+result=`echo "${result}" \
 	| tr '\n' '\t' \
 	| sed -e 's/<plaintext>/\'$'\n<plaintext>/g' \
 	| grep -oE "<plaintext>.*</plaintext>|<pod title=.[^\']*" \
@@ -37,4 +37,4 @@ result=`echo "$result" \
 
 
 # print result
-echo -e "$result"
+echo -e "${result}"
