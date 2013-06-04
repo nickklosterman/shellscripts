@@ -8,7 +8,7 @@
 [ -f ~/.wolfram_api_key ] && . ~/.wolfram_api_key
 
 # properly encode query
-q=$(echo ${*} | tr '\ ' '\+')
+q=$(echo ${*} | sed 's/+/%2B/g' | tr '\ ' '\+')
 
 # fetch and parse result
 result=$(curl -s "http://api.wolframalpha.com/v2/query?input=${q}&appid=${API_KEY}&format=plaintext")
