@@ -133,7 +133,6 @@ if [ $outputMagnetFile == "TPB.magnets" ]
 then
     unencodedQuery=$*
     outputMagnetFile="${unencodedQuery}.magnets"
-    echo ${outputMagnetFile}
 fi
 
 # correctly encode query
@@ -144,8 +143,6 @@ if [ -z "$q" ] ; then
 	url="top/all"
 else
 	url='search/'"$q"'/0/'"$orderby"'/'"$category"
-	echo "${url}"
-#	url='search/'"$q"'/0/'"$orderby"'/600'
 fi
 # get results
 # Here be dragons!
